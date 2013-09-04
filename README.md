@@ -4,8 +4,8 @@
 
 ## 下载相应的软件
 
-* [CodeIgniter2.1.4](http://codeigniter.org.cn/download)
-* [Ucenter1.6.0](http://www.comsenz.com/downloads/install/ucenter#down_open)
+* [CodeIgniter 2.1.4](http://codeigniter.org.cn/download)
+* [Ucenter 1.6.0](http://www.comsenz.com/downloads/install/ucenter#down_open)
 * [DiscuzX3](http://www.comsenz.com/downloads/install/discuzx)
 
   简体utf-8,可以不下载Discuz，这里只是用来最后检验同步登录／登出是否成功
@@ -33,13 +33,13 @@
 
 - 安装 Ucenter
 
-  访问http://ci.connect.uc/uc，按照向导安装即可。
+  访问 http://ci.connect.uc/uc ，按照向导安装即可。
 
   ![image](screenshots/install_uc.png)
 
 - 安装 DiscuzX
 
-  访问http://ci.connect.uc/discuz,按照向导，第二步时候选择只安装DiscuzX,如下图,信息填写uc的安装信息
+  访问 http://ci.connect.uc/discuz ,按照向导，第二步时候选择只安装DiscuzX,如下图,信息填写uc的安装信息
 
   ![image](screenshots/install_discuz.png)
 
@@ -430,7 +430,7 @@
 ## 运行
 
 
-* 打开http://ci.connect.uc/ci
+* 打开 http://ci.connect.uc/ci
 
   ![image](screenshots/demo_step_1.png)
 
@@ -460,6 +460,3 @@
 本教程不含自带用户数据库的情况下，在自有用户表的情况下，处理逻辑类似，要有一个字段记录ucenter的唯一用户id，同步登录和退出的逻辑里使用该id进行相应的操作。
 
 有任何问题请发issues。
-
-
-
