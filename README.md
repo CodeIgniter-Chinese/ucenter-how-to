@@ -1,4 +1,4 @@
-# CodeIgniter 整合 Ucenter 全攻略
+# CodeIgniter 整合 UCenter 全攻略
 
 > 本文默认你已详细阅读过ucenter官方手册并对CodeIgniter有一定的了解。
 
