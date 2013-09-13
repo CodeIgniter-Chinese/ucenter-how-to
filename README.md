@@ -1,14 +1,14 @@
 # CodeIgniter 整合 UCenter 全攻略
 
-> 本文默认你已详细阅读过ucenter官方手册并对CodeIgniter有一定的了解。
+> 本文默认你已详细阅读过 UCcenter 官方手册并对 CodeIgniter 有一定的了解。
 
 ## 下载相应的软件
 
 * [CodeIgniter 2.1.4](http://codeigniter.org.cn/download)
 * [Ucenter 1.6.0](http://www.comsenz.com/downloads/install/ucenter#down_open)
-* [DiscuzX3](http://www.comsenz.com/downloads/install/discuzx)
+* [Discuz! X3](http://www.comsenz.com/downloads/install/discuzx)
 
-  简体utf-8,可以不下载Discuz，这里只是用来最后检验同步登录／登出是否成功
+  简体 UTF-8，可以不下载 Discuz!，这里只是用来最后检验同步登录/登出是否成功。
 
 ## 前置条件
 
@@ -19,9 +19,9 @@
 
 - 搭建服务器
 
-  根目录指向codeIgniter-ucenter
+  根目录指向 codeIgniter-ucenter
 
-  我设置了hosts
+  我设置了 hosts
 
     ```
     127.0.0.1   ci.connect.uc
@@ -31,7 +31,7 @@
 
 ## 开始集成
 
-- 安装 Ucenter
+- 安装 UCenter
 
   访问 http://ci.connect.uc/uc ，按照向导安装即可。
 
@@ -39,19 +39,19 @@
 
 - 安装 DiscuzX
 
-  访问 http://ci.connect.uc/discuz ,按照向导，第二步时候选择只安装DiscuzX,如下图,信息填写uc的安装信息
+  访问 http://ci.connect.uc/discuz ,按照向导，第二步时候选择只安装DiscuzX，如下图，信息填写 UCenter 的安装信息。
 
   ![image](screenshots/install_discuz.png)
 
 - 配置 CodeIgniter
 
-  * 配置application/config.php, 为使用session类，需要设置encryption_key,值任意.
+  * 配置 application/config.php, 为使用 Session 类，需要设置 encryption_key，值任意。
 
     ```
     $config['encryption_key'] = sha1('whatever it is!');
     ```
 
-  * 修改默认控制器welcome.php如下:
+  * 修改默认控制器 welcome.php 如下：
 
     ```php
 
@@ -164,7 +164,7 @@
               include APPPATH.'config/ucenter.php';
               $get = $post = array();
               $code = $this->input->get('code', true);
-              parse_str(static::authcode($code, 'DECODE', UC_KEY), $get);
+              parse_str(self::authcode($code, 'DECODE', UC_KEY), $get);
               $timestamp = time();
               if ($timestamp - $get['time'] > 3600)
               {
@@ -176,7 +176,7 @@
                   echo '非法请求';
                   return;
               }
-              $post = static::unserialize(file_get_contents('php://input'));
+              $post = self::unserialize(file_get_contents('php://input'));
               if (in_array($get['action'], array(
                   'test',
                   'deleteuser',
@@ -199,7 +199,7 @@
               }
               else
               {
-                  echo static::API_RETURN_FAILED;
+                  echo self::API_RETURN_FAILED;
                   return;
               }
   
@@ -207,35 +207,35 @@
   
           private function test($get, $post)
           {
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function deleteuser($get, $post)
           {
-              if ( ! static::API_DELETEUSER)
+              if ( ! self::API_DELETEUSER)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               $uids = $get['ids'];
               //delete your users here
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function gettag($get, $post)
           {
-              if ( ! static::API_GETTAG)
+              if ( ! self::API_GETTAG)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               //
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function synlogin($get, $post)
           {
-              if ( ! static::API_SYNLOGIN)
+              if ( ! self::API_SYNLOGIN)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
               $uid = $get['uid'];
@@ -250,91 +250,91 @@
                   ));
               }
   
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function synlogout($get, $post)
           {
-              if ( ! static::API_SYNLOGOUT)
+              if ( ! self::API_SYNLOGOUT)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
               $this->load->library('session');
               $this->session->sess_destroy();
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function updatepw($get, $post)
           {
-              if ( ! static::API_UPDATEPW)
+              if ( ! self::API_UPDATEPW)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               //这里做修改密码操作
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function updatebadwords($get, $post)
           {
-              if ( ! static::API_UPDATEBADWORDS)
+              if ( ! self::API_UPDATEBADWORDS)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               $cachefile = APPPATH.'../uc_client/data/cache/badwords.php';
               @unlink($cachefile);
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function updatehosts($get, $post)
           {
-              if ( ! static::API_UPDATEHOSTS)
+              if ( ! self::API_UPDATEHOSTS)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               $cachefile = APPPATH.'../uc_client/data/cache/hosts.php';
               @unlink($cachefile);
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function updateapps($get, $post)
           {
-              if ( ! static::API_UPDATEAPPS)
+              if ( ! self::API_UPDATEAPPS)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               $cachefile = APPPATH.'../uc_client/data/cache/apps.php';
               @unlink($cachefile);
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function updateclient($get, $post)
           {
-              if ( ! static::API_UPDATECLIENT)
+              if ( ! self::API_UPDATECLIENT)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
               $cachefile = APPPATH.'../uc_client/data/cache/settings.php';
               @unlink($cachefile);
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function updatecredit($get, $post)
           {
-              if ( ! static::API_UPDATECREDIT)
+              if ( ! self::API_UPDATECREDIT)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           private function getcredit($get, $post)
           {
-              if ( ! static::API_GETCREDIT)
+              if ( ! self::API_GETCREDIT)
               {
-                  return static::API_RETURN_FORBIDDEN;
+                  return self::API_RETURN_FORBIDDEN;
               }
-              return static::API_RETURN_SUCCEED;
+              return self::API_RETURN_SUCCEED;
           }
   
           public static function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
@@ -452,11 +452,11 @@
 
   ![image](screenshots/demo_step_5.png)
 
-> 你还可以打开demo.ogv来观看演示程序的运行视频。
+> 你还可以打开 demo.ogv 来观看演示程序的运行视频。
 
   <video width="750" height="" controls="true" autoplay="false" name="media"><source src="demo.ogv" type="video/ogg"></video>
 
 
-本教程不含自带用户数据库的情况下，在自有用户表的情况下，处理逻辑类似，要有一个字段记录ucenter的唯一用户id，同步登录和退出的逻辑里使用该id进行相应的操作。
+本教程不含自带用户数据库的情况下，在自有用户表的情况下，处理逻辑类似，要有一个字段记录 UCenter 的唯一用户 ID，同步登录和退出的逻辑里使用该 ID 进行相应的操作。
 
-有任何问题请发issues。
+有任何问题请发 issues。
