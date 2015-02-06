@@ -1,17 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
-*  Ucenter接口通知处理控制器
+* Ucenter接口通知处理控制器
 *
-*  本类根据ucenter提供的通知处理实例代码编写，具体处理部分需要根据不同应用的逻辑自行编写处理逻辑。
-*  具体请仔细阅读ucenter自带的手册。
+* 本类根据ucenter提供的通知处理实例代码编写，具体处理部分需要根据不同应用的逻辑自行编写处理逻辑。
+* 具体请仔细阅读ucenter自带的手册。
 *
-*  教程https://github.com/CodeIgniter-Chinese/ucenter-how-to/blob/master/README.md
-*  对ci程序和discuz通过ucenter整合在一起做了清楚的介绍，至于ci自带用户表的情况没有介绍。
+* 教程https://github.com/CodeIgniter-Chinese/ucenter-how-to/blob/master/README.md
+* 对ci程序和discuz通过ucenter整合在一起做了清楚的介绍，至于ci自带用户表的情况没有介绍。
 *
-*  该代码就是在此基础上，参考ucenter手册中的示例代码，编写了login，register，logout方法，
-*  以举例说明如何整合ci自带用户表的情况，不当之处，欢迎指正。
+* 该代码就是在此基础上，参考ucenter手册中的示例代码，编写了login，register，logout方法，
+* 以举例说明如何整合ci自带用户表的情况，不当之处，欢迎指正。
 *
-*  @author     yikai.shao<807862588@qq.com>
+* @author yikai.shao<807862588@qq.com>
 */
 
 /**
@@ -22,7 +22,7 @@
    `username` char(15) default NULL COMMENT '用户名',
    `admin` tinyint(1) default NULL COMMENT '是否为管理员',
    PRIMARY KEY  (`uid`)
- ) TYPE=MyISAM;
+ ) ENGINE=MyISAM;
 
  */
 header("Content-type: text/html; charset=utf-8");
@@ -51,6 +51,10 @@ class Uc extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+
+        $this->load->database();
+        $this->load->library('session');
+        $this->load->helper('url');
         
         include APPPATH.'config/ucenter.php';
         include './uc_client/client.php';
@@ -58,13 +62,10 @@ class Uc extends CI_Controller
         $user_info = $this->session->userdata('user');
         if(!empty($user_info['username'])) {
             list($u_id, $user_name) = explode("\t", uc_authcode($user_info['username'], 'DECODE'));
-        } else {
-            $u_id = $user_name = '';
-        }
+        } 
     }
     public function index()
-    {
-        
+    {  
         $get = $post = array();
         $code = $this->input->get('code', true);
         parse_str(self::authcode($code, 'DECODE', UC_KEY), $get);
@@ -110,10 +111,6 @@ class Uc extends CI_Controller
 
     public function login()
     {
-        /**
-         *  登录
-         *  @author yikai.shao <807862588@qq.com>
-         */
         $user_info = $this->session->userdata('user');
         if(!empty($user_info['username']))
         {
@@ -162,10 +159,6 @@ class Uc extends CI_Controller
 
     public function register()
     {
-        /**
-         *  注册
-         *  @author yikai.shao <807862588@qq.com>
-         */
         if(empty($_POST['submit'])) {
             //注册表单
             echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
@@ -241,10 +234,6 @@ class Uc extends CI_Controller
     }
     public function logout()
     {
-        /**
-         *  注销
-         *  @author yikai.shao <807862588@qq.com>
-         */
         $this->session->sess_destroy();
         //生成同步退出的代码
         $ucsynlogout = uc_user_synlogout();
