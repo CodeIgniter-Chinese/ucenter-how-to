@@ -23,8 +23,18 @@
    `admin` tinyint(1) default NULL COMMENT '是否为管理员',
    PRIMARY KEY  (`uid`)
  ) ENGINE=MyISAM;
-
  */
+ 
+ /**
+  * 说明
+  * 
+  * 登录：http://ci.connect.uc/ci/index.php/api/uc/login
+  * 注册：http://ci.connect.uc/ci/index.php/api/uc/register
+  * 注销：http://ci.connect.uc/ci/index.php/api/uc/logout
+  * 
+  * 一、需要先建立好数据表
+  * 二、配置好config/database.php中的相关选项
+  */
 header("Content-type: text/html; charset=utf-8");
 
 class Uc extends CI_Controller
